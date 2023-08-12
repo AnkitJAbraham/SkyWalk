@@ -1,8 +1,10 @@
 import os
 from flask import Flask, render_template
+from dotenv import load_dotenv
 
 import pulumi.automation as auto
 
+load_dotenv()
 
 def ensure_plugins():
     ws = auto.LocalWorkspace()
@@ -13,8 +15,8 @@ def create_app():
     ensure_plugins()
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY="secret",
-        PROJECT_NAME="SkyWalk",
+        SECRET_KEY=os.environ.get('SECRET_KEY'),
+        PROJECT_NAME=os.environ.get("PULUMI_ORG"),
         PULUMI_ORG=os.environ.get("PULUMI_ORG"),
     )
 
